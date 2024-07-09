@@ -37,12 +37,11 @@ def hallarCoef(a,b):
 import matplotlib.pyplot as plt
 import sympy as sym
 
-def graficar(xi,yi,c,colorcurva,rango_x,rango_y,x_pol,y_pol):
+def graficar(xi,yi,c,colorcurva,rango_x,rango_y,x_pol,y_pol,lim_inf):
     x = sym.Symbol('x')
     f_x = sum(round(coef[0],4) *x**i for i, coef in enumerate(c))
-    imprimirPolinomio(f_x)
     # Generar valores de x
-    x_val = np.linspace(min(xi)-10000, max(xi)+10000, 100)
+    x_val = np.linspace(min(xi)-lim_inf, max(xi)+lim_inf, 100)
     f = sym.lambdify(x, f_x, modules=['numpy'])
     # Calcular los  valores de y 
     y = f(x_val)
@@ -55,6 +54,7 @@ def graficar(xi,yi,c,colorcurva,rango_x,rango_y,x_pol,y_pol):
     # Calcular el error cuadrático medio (MSE)
     mse = np.mean(residuos**2)
     print("El error cuadrático medio para este ajuste es de:", round(mse,6))
+    imprimirPolinomio(f_x)
     # Graficar
     plt.figure(figsize=(10, 8))
     # Graficar los puntos originales con barras de error
@@ -99,6 +99,7 @@ def graficarNoLineales(xi,yi,f_x,colorcurva,rango_x,rango_y,x_pol,y_pol,lim_inf)
     # Calcular el error cuadrático medio (MSE)
     mse = np.mean(residuos**2)
     print("El error cuadrático medio para este ajuste es de:", round(mse,2))
+    imprimirPolinomio(f_x)
     # Graficar
     plt.figure(figsize=(10, 8))
     # Graficar los puntos originales con barras de error
@@ -129,7 +130,7 @@ def graficarNoLineales(xi,yi,f_x,colorcurva,rango_x,rango_y,x_pol,y_pol,lim_inf)
 from IPython.display import display, Math
 
 def expOriginal(c,exp):
-    print("Con los coeficientes asociados al polinomio linealizado hallamos los coeficientes de nuestra expresión:\n")  
+    print("Con los coeficientes asociados al polinomio linealizado hallamos los coeficientes de nuestra\n expresión:\n")  
     #Hallar los coeficientes adecuados
     b_exp = np.e**(c[0,0])
     a_exp = c[1,0]
@@ -142,7 +143,6 @@ def expOriginal(c,exp):
     else:
         #Generar la ecuación en la forma bx^{a}
         f_x = round(b_exp,4)*x**(round(a_exp,4))
-    imprimirPolinomio(f_x)
     return f_x
 
 #-----------------------Impresión--------------------------
